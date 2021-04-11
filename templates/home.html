@@ -1,0 +1,24 @@
+<HTML>
+
+    <H1>Times of India</H1>
+        <TABLE>
+            <TR>
+                {% for newsitem in news %}
+                <TD>{{newsitem.count}}</TD>
+                <TD><A href='{{newsitem.link}}'> {{newsitem.headline}} </A></TD>
+            </TR>
+            {% endfor %}
+        </TABLE>
+    
+        <H1>Apple Stock Price History</H1>
+    
+        {% autoescape off %}{{ tickers }}{% endautoescape %} 
+        <br/>
+        <H1>RBI Notifications</H1>
+        {% autoescape off %}{{ rbi }}{% endautoescape %} 
+    
+    
+    </HTML>
+    
+    
+    
