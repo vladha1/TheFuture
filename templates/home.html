@@ -10,11 +10,12 @@
                 {% for newsitem in newslist %}
             <TR>
                 
-                <TD><A href='{{newsitem.link}}' style="color:#fbff00;"> {{newsitem.Title}} </A>
-                <P>{{newsitem.Source}} - {{newsitem.Published}}</P>
+                <TD ><A href='{{newsitem.link}}' style="color:#fbff00;"> {{newsitem.Title}} </A>
+                <P >{{newsitem.Source}} - {{newsitem.Published}}</P>
                 </TD>
-
-                
+                <TD style="width:50%;">{% autoescape off %} {{newsitem.Summary_Detail}}{% endautoescape %} </TD>
+                                
+4
             </TR>
             {% endfor %}
         </TABLE>
