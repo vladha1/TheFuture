@@ -9,6 +9,7 @@ from decimal import Decimal
 import requests
 from bs4 import BeautifulSoup
 import investpy
+
 #import feedparser
 
 
@@ -47,6 +48,10 @@ def home1(request):
         return render(request,'home.html',{'news':timesofindia(),'tickers':invest(),'rbi':rbi()})
 
 
+
+
+
+
 def home(request):
     newslist=[]
 
@@ -63,7 +68,11 @@ def home(request):
             articles = results['articles']
         
             for article in articles:
-                newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':article.published,'Summary_Detail':list(article.summary_detail.values())[3],'link':article.link}]
+                txt=list(article.summary_detail.values())[3]
+                detailtext = BeautifulSoup(txt, "html.parser").get_text()                
+                newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':article.published,'Summary_Detail':detailtext,'link':article.link}]
+                
+
         except:
             a=1
         render(request, 'myapp/index.html', {'newslist':newslist})

@@ -7,7 +7,7 @@ import uuid
 from datetime import datetime
 from decimal import Decimal
 import requests
-
+from bs4 import BeautifulSoup
 from newscatcher import Newscatcher
 from newscatcher import urls
 
@@ -29,7 +29,9 @@ def home(request):
             articles = results['articles']
         
             for article in articles:
-                newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':article.published,'Summary_Detail':list(article.summary_detail.values())[3],'link':article.link}]
+                txt=list(article.summary_detail.values())[3]
+                detailtext = BeautifulSoup(txt, "html.parser").get_text()                
+                newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':article.published,'Summary_Detail':detailtext,'link':article.link}]
         except:
             a=1
         print(newslist)
