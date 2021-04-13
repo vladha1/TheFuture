@@ -24,7 +24,7 @@ def home(request):
          
         nc = Newscatcher(website = IndianURL)
         results = nc.get_news()
-        print(nc)
+        #print(nc)
         try:
             articles = results['articles']
         
@@ -36,7 +36,7 @@ def home(request):
                 
         except:
             a=1
-        print(newslist)
+    print("responding")
     return render(request, 'home.html', {'newslist':newslist})
         #return newslist
 
