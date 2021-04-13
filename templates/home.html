@@ -49,7 +49,7 @@
         }
   
         #table_detail {
-            
+            font-size: 25px;
             text-align: left;
             border-collapse: collapse;
             border: #A4A4A4;
@@ -75,7 +75,8 @@
 
             </tr>
             {% for newsitem in newslist %}
-
+            
+            
             <tr onclick="showHideRow('{{newsitem.id}}');">
                 
                 <TD style='color:yellow;'> {{newsitem.Title}} 
@@ -85,9 +86,11 @@
             
             <tr id="{{newsitem.id}}" class="hidden_row">
                 <td colspan=4>
-                    <A href='{{newsitem.link}}' style="color:#ecece5;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">{{newsitem.Summary_Detail}}</A>
+                    {{newsitem.Summary_Detail}}
                 </td>
             </tr>
+            <tr><td><a href='{{newsitem.link}}'><img src="https://www.iconsdb.com/icons/preview/blue/external-link-xxl.png" height=30></a></td></tr>
+
             {% endfor %}
             
         </table>
