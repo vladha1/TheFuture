@@ -1,22 +1,23 @@
 <HTML>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-    <H1>Times of India</H1>
-        <TABLE>
+    <H1>India News</H1>
+        <TABLE class="table table-dark">
             <TR>
-                {% for newsitem in news %}
-                <TD>{{newsitem.count}}</TD>
-                <TD><A href='{{newsitem.link}}'> {{newsitem.headline}} </A></TD>
+                <TH scope="col">Headline</TH>
+            </TR>
+
+                {% for newsitem in newslist %}
+            <TR>
+                
+                <TD><A href='{{newsitem.link}}'> {{newsitem.Title}} </A>
+                <P>{{newsitem.Source}} - {{newsitem.Published}}</P>
+                </TD>
+
+                
             </TR>
             {% endfor %}
         </TABLE>
-    
-        <H1>Apple Stock Price History</H1>
-    
-        {% autoescape off %}{{ tickers }}{% endautoescape %} 
-        <br/>
-        <H1>RBI Notifications</H1>
-        {% autoescape off %}{{ rbi }}{% endautoescape %} 
-    
     
     </HTML>
     
