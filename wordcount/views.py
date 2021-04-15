@@ -13,7 +13,7 @@ from newscatcher import urls
 from datetime import datetime
 import datefinder
 from operator import itemgetter
-import dateparser
+
 
 
 def home(request):
@@ -37,6 +37,7 @@ def home(request):
                datesfound=datefinder.find_dates(article.published)
                dateresult="x"
                for match in datesfound:
+                print(match)
                 dateresult=match.strftime("%Y-%m-%d %H:%M")
 
                txt=list(article.summary_detail.values())[3]
@@ -46,15 +47,7 @@ def home(request):
                
                newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
 
-    
-def otherfeeds():
-    newsfeeds = ["https://www.livemint.com/rss/markets.xml","https://economictimes.indiatimes.com/rssfeedsdefault.cms","https://www.business-standard.com/rss/home_page_top_stories.rss"]
-
-    for items in newsfeed:
-        items_parse = feedparser.parse(items).entries
-        return items_parse
-
-
+            
     print("responding")
     return render(request, 'home.html', {'newslist':newslist_sorted})
         #return newslist
