@@ -50,8 +50,6 @@ def home1(request):
 
 
 
-
-
 def home(request):
     newslist=[]
 
@@ -72,6 +70,7 @@ def home(request):
                 detailtext = BeautifulSoup(txt, "html.parser").get_text()                
                 newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':article.published,'Summary_Detail':detailtext,'link':article.link}]
                 
+                sorted(newslist, key = lambda i: (i['Published'],reverse=True))
 
         except:
             a=1

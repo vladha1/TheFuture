@@ -10,6 +10,9 @@ import requests
 from bs4 import BeautifulSoup
 from newscatcher import Newscatcher
 from newscatcher import urls
+from datetime import datetime
+import datefinder
+from operator import itemgetter
 
 
 
@@ -25,18 +28,27 @@ def home(request):
         nc = Newscatcher(website = IndianURL)
         results = nc.get_news()
         #print(nc)
-        try:
-            articles = results['articles']
         
+
+        if results is not None and results['articles'] is not None:
+            articles = results['articles']
+
             for article in articles:
-                txt=list(article.summary_detail.values())[3]
-                detailtext = BeautifulSoup(txt, "html.parser").get_text()                
-                counter=counter+1
-                newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':article.published,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
-                
-        except:
-            a=1
+               datesfound=datefinder.find_dates(article.published)
+               dateresult="x"
+               for match in datesfound:
+                print(match)
+                dateresult=match.strftime("%Y-%m-%d %H:%M")
+
+               txt=list(article.summary_detail.values())[3]
+               detailtext = BeautifulSoup(txt, "html.parser").get_text()                
+               counter=counter+1
+               newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
+               
+               newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
+
+            
     print("responding")
-    return render(request, 'home.html', {'newslist':newslist})
+    return render(request, 'home.html', {'newslist':newslist_sorted})
         #return newslist
 

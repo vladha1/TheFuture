@@ -35,7 +35,7 @@
             margin: 0 auto;
             padding: 0px;
             text-align: center;
-            width: 995px;
+            width: 100%;
         }
   
         #wrapper h1 {
@@ -49,7 +49,7 @@
         }
   
         #table_detail {
-            font-size: 25px;
+            font-size: 20px;
             text-align: left;
             border-collapse: collapse;
             border: #A4A4A4;
@@ -79,8 +79,8 @@
             
             <tr onclick="showHideRow('{{newsitem.id}}');">
                 
-                <TD style='color:yellow;'> {{newsitem.Title}} 
-                    <P style='color:white;'>{{newsitem.Source}} - {{newsitem.Published}}</P>
+                <TD><SPAN style='color:rgb(0, 110, 255);'> {{newsitem.Published}}|<SPAN style='color:yellow;'>{{newsitem.Title}}|</SPAN>
+                    <SPAN style='color: rgb(0,110,255);'>{{newsitem.Source}}</SPAN>
                     </TD>
             </tr>
             
@@ -89,7 +89,7 @@
                     {{newsitem.Summary_Detail}}
                 </td>
             </tr>
-            <tr><td><a href='{{newsitem.link}}' target="_blank"><img src="https://www.iconsdb.com/icons/preview/blue/external-link-xxl.png" height=30></a></td></tr>
+            <tr><td><a href='{{newsitem.link}}'><img src="https://www.iconsdb.com/icons/preview/blue/external-link-2-xxl.png" height=20></a></td></tr>
 
             {% endfor %}
             
