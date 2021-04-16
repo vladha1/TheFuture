@@ -22,6 +22,7 @@ def home(request):
     IndianURLs = urls(country = 'IN')
     
     searchcriteria = request.GET.get('search')
+    print("criteria:",searchcriteria)
 
     det=[]
     counter=0
@@ -29,9 +30,7 @@ def home(request):
          
         nc = Newscatcher(website = IndianURL)
         results = nc.get_news()
-        if 'search' in locals():
-            print(search)
-
+        
         if results is not None and results['articles'] is not None:
             articles = results['articles']
 

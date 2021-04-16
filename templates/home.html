@@ -83,10 +83,10 @@
             {% for newsitem in newslist %}
             
             
-            <tr onclick="showHideRow('{{newsitem.id}}');">
+            <tr>
                 
-                <TD><SPAN style='color:rgb(0, 110, 255);'> {{newsitem.Published}}|<SPAN style='color:yellow;'>{{newsitem.Title}}|</SPAN>
-                    <SPAN style='color:rgb(0, 128, 21));'>{{newsitem.Source}}</SPAN>
+                <TD  onclick="showHideRow('{{newsitem.id}}');"><SPAN style='color:rgb(248, 250, 252);'> {{newsitem.Published}}|<SPAN style='color:yellow;'>{{newsitem.Title}}|</SPAN>
+                    <SPAN style='color:rgb(0, 128, 21));'><a href='{{newsitem.link}}' target="_blank">{{newsitem.Source}}</a></SPAN><SPAN></a></SPAN>
                     </TD>
             </tr>
             
@@ -95,7 +95,7 @@
                     {{newsitem.Summary_Detail}}
                 </td>
             </tr>
-            <tr><td><a href='{{newsitem.link}}' target="_blank"><img src="https://www.iconsdb.com/icons/preview/blue/external-link-2-xxl.png" height=20 "></a></td></tr>
+            
 
             {% endfor %}
             
