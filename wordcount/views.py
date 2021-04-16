@@ -39,7 +39,7 @@ def home(request):
                datesfound=datefinder.find_dates(article.published)
                dateresult="x"
                for match in datesfound:
-                print(match)
+                
                 dateresult=match.strftime("%Y-%m-%d %H:%M")
 
                 txt=list(article.summary_detail.values())[3]
