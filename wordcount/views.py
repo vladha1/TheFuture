@@ -18,17 +18,19 @@ from operator import itemgetter
 
 def home(request):
     newslist=[]
-
+    searchcriteria=None
     IndianURLs = urls(country = 'IN')
     
+    searchcriteria = request.GET.get('search')
+
     det=[]
     counter=0
     for IndianURL in IndianURLs:
          
         nc = Newscatcher(website = IndianURL)
         results = nc.get_news()
-        #print(nc)
-        
+        if 'search' in locals():
+            print(search)
 
         if results is not None and results['articles'] is not None:
             articles = results['articles']
@@ -40,15 +42,16 @@ def home(request):
                 print(match)
                 dateresult=match.strftime("%Y-%m-%d %H:%M")
 
-               txt=list(article.summary_detail.values())[3]
-               detailtext = BeautifulSoup(txt, "html.parser").get_text()                
-               counter=counter+1
-               newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
-               
-               newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
-
+                txt=list(article.summary_detail.values())[3]
+                detailtext = BeautifulSoup(txt, "html.parser").get_text()                
+                
+                if searchcriteria==None or searchcriteria in detailtext or searchcriteria in article.title:               
+                    counter=counter+1
+                    newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
+                
+                newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
+                #newslist_sorted=newslist_sorted[newslist_sorted['Summary_Detail'].str.contains("Hwang")]
             
     print("responding")
     return render(request, 'home.html', {'newslist':newslist_sorted})
         #return newslist
-
