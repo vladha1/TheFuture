@@ -57,7 +57,7 @@ def home(request):
 
 def rssfeeds(searchcriteria):
 
-    feedsources=['https://www.livemint.com/rss/news','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
+    feedsources=['https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.zeebiz.com/latest.xml/feed/','https://www.financialexpress.com/market/indian-markets/feed/','https://www.livemint.com/rss/news','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
     counter=0
     for feedsource in feedsources:
@@ -71,10 +71,23 @@ def rssfeeds(searchcriteria):
                 newsitem['Source']=NewsFeed.feed.title
                 if NewsFeed.feed.title=="Latest News":
                     newsitem['Source']="Business Standard"
-                newsitem['Title']=items.title
-                newsitem['Summary_Detail']=items.summary
-                newsitem['link']=items.link
-                datesfound=datefinder.find_dates(items.published)
+                elif NewsFeed.feed.title=="Top News and Analysis (pro)":
+                    newsitem['Source']="CNBC"
+                elif NewsFeed.feed.title=="All News":
+                    newsitem['Source']="Investing.com"
+                
+
+
+                newsitem['Title']=items.get('title')
+
+                if NewsFeed.feed.title=="All News":
+                    newsitem['Summary_Detail']=items.get('title')
+                else:
+                    newsitem['Summary_Detail']=items.get('summary')
+                
+                
+                newsitem['link']=items.get('link')
+                datesfound=datefinder.find_dates(items.get('published'))
                 dateresult="x"
                 for match in datesfound:
                     dateresult=match.strftime("%Y-%m-%d %H:%M")
