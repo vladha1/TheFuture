@@ -43,11 +43,10 @@ def home(request):
                 txt=list(article.summary_detail.values())[3]
                 detailtext = BeautifulSoup(txt, "html.parser").get_text()                
                 
-            if searchcriteria==None or searchcriteria in detailtext or searchcriteria in article.title:               
                 counter=counter+1
                 newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
 
-    newslist=newslist+rssfeeds(searchcriteria)
+    newslist=newslist+rssfeeds()
     newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
                 #newslist_sorted=newslist_sorted[newslist_sorted['Summary_Detail'].str.contains("Hwang")]
     
@@ -55,9 +54,9 @@ def home(request):
     return render(request, 'home.html', {'newslist':newslist_sorted})
         #return newslist
 
-def rssfeeds(searchcriteria):
+def rssfeeds():
 
-    feedsources=['https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.zeebiz.com/latest.xml/feed/','https://www.financialexpress.com/market/indian-markets/feed/','https://www.livemint.com/rss/news','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
+    feedsources=['http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.zeebiz.com/latest.xml/feed/','https://www.financialexpress.com/market/indian-markets/feed/','https://www.livemint.com/rss/news','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
     counter=0
     for feedsource in feedsources:
@@ -65,36 +64,33 @@ def rssfeeds(searchcriteria):
         NewsFeed = feedparser.parse(feedsource)
         for items in NewsFeed.entries:
             newsitem={}
-            if searchcriteria==None or searchcriteria in items.summary or searchcriteria in items.title:               
-                counter=counter+1
-                newsitem['id']="head1_"+str(counter)
-                newsitem['Source']=NewsFeed.feed.title
-                if NewsFeed.feed.title=="Latest News":
-                    newsitem['Source']="Business Standard"
-                elif NewsFeed.feed.title=="Top News and Analysis (pro)":
-                    newsitem['Source']="CNBC"
-                elif NewsFeed.feed.title=="All News":
-                    newsitem['Source']="Investing.com"
-                
+            counter=counter+1
+            newsitem['id']="head1_"+str(counter)
+            newsitem['Source']=NewsFeed.feed.title
+            if NewsFeed.feed.title=="Latest News":
+                newsitem['Source']="Business Standard"
+            elif NewsFeed.feed.title=="Top News and Analysis (pro)":
+                newsitem['Source']="CNBC"
+            elif NewsFeed.feed.title=="All News":
+                newsitem['Source']="Investing.com"
 
+            newsitem['Title']=items.get('title')
 
-                newsitem['Title']=items.get('title')
-
-                if NewsFeed.feed.title=="All News":
-                    newsitem['Summary_Detail']=items.get('title')
-                else:
-                    newsitem['Summary_Detail']=items.get('summary')
-                
-                
-                newsitem['link']=items.get('link')
-                datesfound=datefinder.find_dates(items.get('published'))
-                dateresult="x"
-                for match in datesfound:
-                    dateresult=match.strftime("%Y-%m-%d %H:%M")
-                
-                #dateresult="2021-04-18"
-                newsitem['Published']=dateresult
-                news=news+[newsitem]
+            if NewsFeed.feed.title=="All News":
+                newsitem['Summary_Detail']=items.get('title')
+            else:
+                newsitem['Summary_Detail']=items.get('summary')
+            
+            
+            newsitem['link']=items.get('link')
+            datesfound=datefinder.find_dates(items.get('published'))
+            dateresult="x"
+            for match in datesfound:
+                dateresult=match.strftime("%Y-%m-%d %H:%M")
+            
+            #dateresult="2021-04-18"
+            newsitem['Published']=dateresult
+            news=news+[newsitem]
 
             
     #print(NewsFeed.feed.title)
