@@ -68,17 +68,25 @@
     </style>
 </head>
 
-<img alt="Embedded Image" src={{ wordcloud }}>
-
-
-
 
 <form method="GET">
-    <input type="text" name="search" id="name">
-    <input type="submit" value="Search" />
+        <input type="text" name="search" id="name">
+        <a class="btn btn-primary"><input type="submit" value="Search" />  </a>
+        <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">WordCloud
+    </form>
 
-    
-</form>
+  <div class="row">
+    <div class="col">
+      <div class="collapse multi-collapse" id="multiCollapseExample1">
+        <div class="card card-body">
+            <img alt="Embedded Image" height=400 width=400 src={{ wordcloud }}>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</a>
+
 
 <body>
     <div id="wrapper">

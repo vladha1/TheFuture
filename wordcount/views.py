@@ -31,7 +31,7 @@ def home(request):
     IndianURLs = urls(country = 'IN')
     
     searchcriteria = request.GET.get('search')
-    print("criteria:",searchcriteria)
+    #print("criteria:",searchcriteria)
 
     det=[]
     counter=0
@@ -61,7 +61,7 @@ def home(request):
     if searchcriteria!=None:
         newsdf=newsdf[(newsdf['Summary_Detail'].str.contains(searchcriteria))|(newsdf['Title'].str.contains(searchcriteria))|(newsdf['Source'].str.contains(searchcriteria))]
 
-    print("type",type(newsdf))
+    #print("type",type(newsdf))
     newsdf=newsdf.sort_values(by=['Published'],ascending=False)
     newslist=newsdf.to_dict('records')
 
@@ -74,7 +74,7 @@ def home(request):
     
     wordcloud = wordcloudplot(txt)
 
-    print("responding")
+    #print("responding")
     return render(request, 'home.html', {'newslist':newslist,'wordcloud':wordcloud})
         #return newslist
 
@@ -126,7 +126,7 @@ def wordcloudplot(src):
 
     comment_words = ' '
     stopwords = set(STOPWORDS) 
-    print(src)
+    #print(src)
     # iterate through the csv file 
     for val in [src]: 
 
@@ -160,6 +160,6 @@ def wordcloudplot(src):
     string = base64.b64encode(image.read())
 
     image_64 = 'data:image/png;base64,' + urllib.parse.quote(string)
-    print("type:",type(image_64))
+    #print("type:",type(image_64))
     return image_64
     
