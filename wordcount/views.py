@@ -14,6 +14,16 @@ from datetime import datetime
 import datefinder
 from operator import itemgetter
 import feedparser
+from io import StringIO
+import matplotlib.pyplot as plt
+import io
+import base64
+import urllib
+import numpy as np
+
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud, STOPWORDS
+
 
 def home(request):
     newslist=[]
@@ -59,11 +69,17 @@ def home(request):
 
                 #newslist_sorted=newslist_sorted[newslist_sorted['Summary_Detail'].str.contains("Hwang")]
     
+        
+    txt=str(newsdf['Title'])
+    
+    wordcloud = wordcloudplot(txt)
+
     print("responding")
-    return render(request, 'home.html', {'newslist':newslist})
+    return render(request, 'home.html', {'newslist':newslist,'wordcloud':wordcloud})
         #return newslist
 
 def rssfeeds():
+
 
     feedsources=['https://www.indiainfoline.com/rss/news.xml','http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.zeebiz.com/latest.xml/feed/','https://www.financialexpress.com/market/indian-markets/feed/','https://www.livemint.com/rss/news','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
@@ -102,7 +118,48 @@ def rssfeeds():
             news=news+[newsitem]
 
             
-    #print(NewsFeed.feed.title)
-            
     return news
 
+
+
+def wordcloudplot(src):
+
+    comment_words = ' '
+    stopwords = set(STOPWORDS) 
+    print(src)
+    # iterate through the csv file 
+    for val in [src]: 
+
+    # typecaste each val to string 
+        val = str(val) 
+
+        # split the value 
+        tokens = val.split() 
+
+    # Converts each token into lowercase 
+    for i in range(len(tokens)): 
+        tokens[i] = tokens[i].lower() 
+
+    for words in tokens: 
+        comment_words = comment_words + words + ' '
+
+
+    wordcloud = WordCloud(width = 800, height = 800, 
+                background_color ='white', 
+                stopwords = stopwords, 
+                min_font_size = 10,max_words=500).generate(comment_words) 
+
+    # plot the WordCloud image                        
+    plt.figure(figsize = (8, 8), facecolor = None) 
+    plt.imshow(wordcloud,interpolation='bilinear') 
+    plt.axis("off") 
+    
+    image = io.BytesIO()
+    plt.savefig(image, format='png')
+    image.seek(0)  # rewind the data
+    string = base64.b64encode(image.read())
+
+    image_64 = 'data:image/png;base64,' + urllib.parse.quote(string)
+    print("type:",type(image_64))
+    return image_64
+    
