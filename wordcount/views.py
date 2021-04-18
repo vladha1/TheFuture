@@ -49,7 +49,7 @@ def home(request):
     newslist=newslist+rssfeeds()
     newsdf=pd.DataFrame(newslist)
     if searchcriteria!=None:
-        newsdf=newsdf[newsdf['Summary_Detail'].str.contains(searchcriteria)].reset_index()
+        newsdf=newsdf[(newsdf['Summary_Detail'].str.contains(searchcriteria))|(newsdf['Title'].str.contains(searchcriteria))|(newsdf['Source'].str.contains(searchcriteria))]
 
     print("type",type(newsdf))
     newsdf=newsdf.sort_values(by=['Published'],ascending=False)
