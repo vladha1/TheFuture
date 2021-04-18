@@ -47,11 +47,20 @@ def home(request):
                 newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
 
     newslist=newslist+rssfeeds()
-    newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
+    newsdf=pd.DataFrame(newslist)
+    if searchcriteria!=None:
+        newsdf=newsdf[newsdf['Summary_Detail'].str.contains(searchcriteria)].reset_index()
+
+    print("type",type(newsdf))
+    newsdf=newsdf.sort_values(by=['Published'],ascending=False)
+    newslist=newsdf.to_dict('records')
+
+    #newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
+
                 #newslist_sorted=newslist_sorted[newslist_sorted['Summary_Detail'].str.contains("Hwang")]
     
     print("responding")
-    return render(request, 'home.html', {'newslist':newslist_sorted})
+    return render(request, 'home.html', {'newslist':newslist})
         #return newslist
 
 def rssfeeds():
