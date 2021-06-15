@@ -58,8 +58,8 @@ def home(request):
 
     newslist=newslist+rssfeeds()
     newsdf=pd.DataFrame(newslist)
-    if searchcriteria!=None:
-        newsdf=newsdf[(newsdf['Summary_Detail'].str.contains(searchcriteria))|(newsdf['Title'].str.contains(searchcriteria))|(newsdf['Source'].str.contains(searchcriteria))]
+    #if searchcriteria!=None:
+    #    newsdf=newsdf[(newsdf['Summary_Detail'].str.contains(searchcriteria))|(newsdf['Title'].str.contains(searchcriteria))|(newsdf['Source'].str.contains(searchcriteria))]
 
     #print("type",type(newsdf))
     newsdf=newsdf.sort_values(by=['Published'],ascending=False)
@@ -72,10 +72,10 @@ def home(request):
         
     txt=str(newsdf['Title'])
     
-    wordcloud = wordcloudplot(txt)
+    #wordcloud = wordcloudplot(txt)
 
     #print("responding")
-    return render(request, 'home.html', {'newslist':newslist,'wordcloud':wordcloud})
+    return render(request, 'home.html', {'newslist':newslist})
         #return newslist
 
 def rssfeeds():
