@@ -19,6 +19,30 @@
             $("#" + row).toggle();
         }
     </script>
+
+<script>
+    function startTime() {
+      var today = new Date();
+
+      var d=today.getDate();
+      var mm =today.getMonth()+1;
+      var y =today.getFullYear();
+
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById('tm').innerHTML =  h + ":" + m + ":" + s;
+      document.getElementById('dt').innerHTML =  y+"-"+mm+"-"+d;
+      var t = setTimeout(startTime, 1000);
+    }
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    }
+</script>
+
   
     <style>
         body {
@@ -69,34 +93,22 @@
 </head>
 
 
-<form method="GET">
-        <input type="text" name="search" id="name">
-        <a class="btn btn-primary"><input type="submit" value="Search" />  </a>
-        <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">WordCloud
-    </form>
-
-  <div class="row">
-    <div class="col">
-      <div class="collapse multi-collapse" id="multiCollapseExample1">
-        <div class="card card-body">
-            <img alt="Embedded Image" height=400 width=400 src={{ wordcloud }}>
-        </div>
-      </div>
-    </div>
-   
-  </div>
-</a>
 
 
-<body>
+
+    <body onload="startTime()">
+
+    
     <div id="wrapper">
   
         <table class="table table-striped table-dark"  id="table_detail" align:left >
   
             <tr>
-                <th>India Headlines</th>
-
+                <td> <SPAN id="dt" style='color:rgb(248, 250, 252); font-size: 40px'></SPAN> <SPAN id="tm" style='color:#c19edf; font-size: 40px'></SPAN> </td>
             </tr>
+
+        
+
             {% for newsitem in newslist %}
             
             
