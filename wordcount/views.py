@@ -15,14 +15,11 @@ import datefinder
 from operator import itemgetter
 import feedparser
 from io import StringIO
-import matplotlib.pyplot as plt
 import io
 import base64
 import urllib
 import numpy as np
-
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud, STOPWORDS
+from pyowm.owm import OWM
 
 
 def home(request):
@@ -75,7 +72,7 @@ def home(request):
     #wordcloud = wordcloudplot(txt)
 
     #print("responding")
-    return render(request, 'home.html', {'newslist':newslist})
+    return render(request, 'home.html', {'newslist':newslist,'weather':weather()})
         #return newslist
 
 def rssfeeds():
@@ -118,47 +115,9 @@ def rssfeeds():
 
             
     return news
-
-
-
-def wordcloudplot(src):
-
-    comment_words = ' '
-    stopwords = set(STOPWORDS) 
-    #print(src)
-    # iterate through the csv file 
-    for val in [src]: 
-
-    # typecaste each val to string 
-        val = str(val) 
-
-        # split the value 
-        tokens = val.split() 
-
-    # Converts each token into lowercase 
-    for i in range(len(tokens)): 
-        tokens[i] = tokens[i].lower() 
-
-    for words in tokens: 
-        comment_words = comment_words + words + ' '
-
-
-    wordcloud = WordCloud(width = 800, height = 800, 
-                background_color ='white', 
-                stopwords = stopwords, 
-                min_font_size = 10,max_words=500).generate(comment_words) 
-
-    # plot the WordCloud image                        
-    plt.figure(figsize = (8, 8), facecolor = None) 
-    plt.imshow(wordcloud,interpolation='bilinear') 
-    plt.axis("off") 
     
-    image = io.BytesIO()
-    plt.savefig(image, format='png')
-    image.seek(0)  # rewind the data
-    string = base64.b64encode(image.read())
-
-    image_64 = 'data:image/png;base64,' + urllib.parse.quote(string)
-    #print("type:",type(image_64))
-    return image_64
-    
+def weather():
+    owm = OWM('e1b22fd351f070c4e79fd931bbb6fa60')
+    mgr = owm.weather_manager()
+    weather = mgr.weather_at_place('Bangalore,IN').weather
+    return(weather.temperature('celsius'))
