@@ -117,7 +117,7 @@ def rssfeeds():
     return news
     
 def weather():
-    owm = OWM('e1b22fd351f070c4e79fd931bbb6fa60')
+    owm = OWM('')
     mgr = owm.weather_manager()
     weather = mgr.weather_at_place('Bangalore,IN').weather
     return(weather.temperature('celsius'))
