@@ -20,6 +20,9 @@ import base64
 import urllib
 import numpy as np
 from pyowm.owm import OWM
+import tweepy
+import pytz
+
 
 
 def home(request):
@@ -53,7 +56,7 @@ def home(request):
                 counter=counter+1
                 newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
 
-    newslist=newslist+rssfeeds()
+    newslist=newslist+rssfeeds()+twitter()
     newsdf=pd.DataFrame(newslist)
     #if searchcriteria!=None:
     #    newsdf=newsdf[(newsdf['Summary_Detail'].str.contains(searchcriteria))|(newsdf['Title'].str.contains(searchcriteria))|(newsdf['Source'].str.contains(searchcriteria))]
@@ -109,11 +112,8 @@ def rssfeeds():
             for match in datesfound:
                 dateresult=match.strftime("%Y-%m-%d %H:%M")
             
-            #dateresult="2021-04-18"
             newsitem['Published']=dateresult
             news=news+[newsitem]
-
-            
     return news
     
 def weather():
@@ -121,3 +121,46 @@ def weather():
     mgr = owm.weather_manager()
     weather = mgr.weather_at_place('Bangalore,IN').weather
     return(weather.temperature('celsius'))
+
+def twitter():
+    tweetnews=[]
+
+    auth = tweepy.OAuthHandler("")
+    auth.set_access_token("" )
+
+    api = tweepy.API(auth)
+    handles=['CNBCTV18Live','EconomicTimes','BBC','PMOIndia','SrBachchan']
+
+    tweets=[]
+    for handle in handles:
+
+        tweets = tweets + api.user_timeline(screen_name=handle, 
+                            # 200 is the maximum allowed count
+                            
+                            include_rts = False,
+                            # Necessary to keep full_text 
+                            exclude_replies = True,
+                            # otherwise only the first 140 words are extracted
+                            tweet_mode = 'extended'
+                            )
+
+    utctz=pytz.timezone('UTC')
+    intz = pytz.timezone('Asia/Calcutta')
+
+    for info in tweets:
+
+
+        source="Twitter-"+info.user.name
+        id=info.id
+        created_at=utctz.localize(info.created_at)
+        created_at_local=created_at.astimezone(intz)
+        published=created_at_local.strftime("%Y-%m-%d %H:%M")
+        fulltextlist=info.full_text.split("http")
+        Title=fulltextlist[0]
+        if len(fulltextlist)>1:
+            url="http"+fulltextlist[1]
+        else:
+            url=""
+        
+        tweetnews=tweetnews+[{'Source':source,'Title':Title,'Published':published,'Summary_Detail':"",'link':url,'id':id}]
+    return tweetnews
