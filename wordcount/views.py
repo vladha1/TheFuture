@@ -119,10 +119,10 @@ def rssfeeds():
 
 def twitter():
     tweetnews=[]
-
+    
 
     api = tweepy.API(auth)
-    handles=['CNBCTV18Live','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets']
+    handles=set(['CNBCTV18Live','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ETmarkets','BloombergTV','CNBCTV18Live','@BT_India','ZeeBusiness','FinancialXpress','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets'])
 
     tweets=[]
     for handle in handles:
