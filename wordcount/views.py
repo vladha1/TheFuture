@@ -120,8 +120,6 @@ def rssfeeds():
 def twitter():
     tweetnews=[]
 
-    auth = tweepy.OAuthHandler("59X78YGbAo6BQ5QefdmQmtYmj", "JCebH7bgEtOFSUAi5Y6dIum45YsGjBd8oSwU7glcUaPoKaTcx4")
-    auth.set_access_token("572792793-RK5PLEtoDdkLog2D5um7xlHXhKmwMJG3UsLFk7jH","Umibys5vQwD4DV5joRrQrvyZezXvt34LDXnjywuW1bMAV" )
 
     api = tweepy.API(auth)
     handles=['CNBCTV18Live','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets']
