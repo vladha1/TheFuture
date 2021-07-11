@@ -75,7 +75,7 @@ def home(request):
     #print("responding")
 
     
-    return render(request, 'home.html', {'newslist':newslist,'weather':weather()})
+    return render(request, 'home.html', {'newslist':newslist})
     
 
 def rssfeeds():
@@ -120,12 +120,13 @@ def rssfeeds():
 def twitter():
     tweetnews=[]
 
-    auth = tweepy.OAuthHandler(")
-    auth.set_access_token("" )
+    auth = tweepy.OAuthHandler("59X78YGbAo6BQ5QefdmQmtYmj", "JCebH7bgEtOFSUAi5Y6dIum45YsGjBd8oSwU7glcUaPoKaTcx4")
+    auth.set_access_token("572792793-RK5PLEtoDdkLog2D5um7xlHXhKmwMJG3UsLFk7jH","Umibys5vQwD4DV5joRrQrvyZezXvt34LDXnjywuW1bMAV" )
+
 
 
     api = tweepy.API(auth)
-    handles=['CNBCTV18Live','EconomicTimes','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ETmarkets','BloombergTV','CNBCTV18Live','BT_India','ZeeBusiness','FinancialXpress','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets']
+    handles=['CNBCTV18Live','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ETmarkets','BloombergTV','CNBCTV18Live','BT_India','ZeeBusiness','FinancialXpress','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets']
 
     tweets=[]
     for handle in handles:
