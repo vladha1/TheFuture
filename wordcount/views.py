@@ -10,7 +10,6 @@ import requests
 from bs4 import BeautifulSoup
 from newscatcher import Newscatcher
 from newscatcher import urls
-from datetime import datetime
 import datefinder
 from operator import itemgetter
 import feedparser
@@ -22,7 +21,6 @@ import numpy as np
 from pyowm.owm import OWM
 import tweepy
 import pytz
-
 
 
 def home(request):
@@ -75,12 +73,14 @@ def home(request):
     #wordcloud = wordcloudplot(txt)
 
     #print("responding")
+
+    
     return render(request, 'home.html', {'newslist':newslist,'weather':weather()})
-        #return newslist
+    
 
 def rssfeeds():
 
-    feedsources=['https://www.indiainfoline.com/rss/news.xml','http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.financialexpress.com/market/indian-markets/feed/','https://www.livemint.com/rss/news','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
+    feedsources=['https://www.indiainfoline.com/rss/news.xml','http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.financialexpress.com/market/indian-markets/feed/','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
     counter=0
     for feedsource in feedsources:
@@ -105,7 +105,6 @@ def rssfeeds():
             else:
                 newsitem['Summary_Detail']=items.get('summary')
             
-            
             newsitem['link']=items.get('link')
             datesfound=datefinder.find_dates(items.get('published'))
             dateresult="x"
@@ -116,20 +115,17 @@ def rssfeeds():
             news=news+[newsitem]
     return news
     
-def weather():
-    owm = OWM('')
-    mgr = owm.weather_manager()
-    weather = mgr.weather_at_place('Bangalore,IN').weather
-    return(weather.temperature('celsius'))
+
 
 def twitter():
     tweetnews=[]
 
-    auth = tweepy.OAuthHandler("")
+    auth = tweepy.OAuthHandler(")
     auth.set_access_token("" )
 
+
     api = tweepy.API(auth)
-    handles=['CNBCTV18Live','EconomicTimes','BBC','PMOIndia','SrBachchan']
+    handles=['CNBCTV18Live','EconomicTimes','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ETmarkets','BloombergTV','CNBCTV18Live','BT_India','ZeeBusiness','FinancialXpress','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets']
 
     tweets=[]
     for handle in handles:
@@ -148,7 +144,6 @@ def twitter():
     intz = pytz.timezone('Asia/Calcutta')
 
     for info in tweets:
-
 
         source="Twitter-"+info.user.name
         id=info.id
