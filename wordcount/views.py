@@ -121,7 +121,7 @@ def twitter():
     tweetnews=[]
 
     auth = tweepy.OAuthHandler("")
-    auth.set_access_token("" )
+    auth.set_access_token("x" )
 
 
 
