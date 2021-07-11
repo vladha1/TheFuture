@@ -120,26 +120,26 @@ def rssfeeds():
 def twitter():
     tweetnews=[]
 
-    auth = tweepy.OAuthHandler("")
-    auth.set_access_token("x" )
-
-
+    auth = tweepy.OAuthHandler("59X78YGbAo6BQ5QefdmQmtYmj", "JCebH7bgEtOFSUAi5Y6dIum45YsGjBd8oSwU7glcUaPoKaTcx4")
+    auth.set_access_token("572792793-RK5PLEtoDdkLog2D5um7xlHXhKmwMJG3UsLFk7jH","Umibys5vQwD4DV5joRrQrvyZezXvt34LDXnjywuW1bMAV" )
 
     api = tweepy.API(auth)
-    handles=['CNBCTV18Live','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ETmarkets','BloombergTV','CNBCTV18Live','BT_India','ZeeBusiness','FinancialXpress','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets']
+    handles=['CNBCTV18Live','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets']
 
     tweets=[]
     for handle in handles:
-
-        tweets = tweets + api.user_timeline(screen_name=handle, 
-                            # 200 is the maximum allowed count
-                            
-                            include_rts = False,
-                            # Necessary to keep full_text 
-                            exclude_replies = True,
-                            # otherwise only the first 140 words are extracted
-                            tweet_mode = 'extended'
-                            )
+        try:
+            tweets = tweets + api.user_timeline(screen_name=handle, 
+                                # 200 is the maximum allowed count
+                                
+                                include_rts = False,
+                                # Necessary to keep full_text 
+                                exclude_replies = True,
+                                # otherwise only the first 140 words are extracted
+                                tweet_mode = 'extended'
+                                )
+        except:
+            print(handle," not valid")
 
     utctz=pytz.timezone('UTC')
     intz = pytz.timezone('Asia/Calcutta')
