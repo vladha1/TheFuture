@@ -110,7 +110,8 @@
                 <td> <SPAN id="tm" style='color:#c19edf; font-size: 80px'></SPAN> <SPAN id="dt" style='color:rgb(248, 250, 252); font-size: 40px'></SPAN></td>
                 
             </tr>
-
+            <tr><td> {% for item in markets %}<SPAN style='color:#e7c943'>{{ item.indexName }} {{ item.last }} ({{ item.percChange }}%)&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>{% endfor %}</td></tr>
+            </tr>
         
 
             {% for newsitem in newslist %}

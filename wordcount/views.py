@@ -21,6 +21,7 @@ import numpy as np
 from pyowm.owm import OWM
 import tweepy
 import pytz
+from nsepython import *
 
 
 def home(request):
@@ -75,12 +76,20 @@ def home(request):
     #print("responding")
 
     
-    return render(request, 'home.html', {'newslist':newslist})
+    return render(request, 'home.html', {'newslist':newslist,'markets':markets()})
     
+
+def markets():
+        indices=['NIFTY 50','NIFTY BANK','NIFTY REALTY','NIFTY PHARMA','NIFTY PHARMA']
+        indexcols=nse_index()[['indexName','last','percChange']]
+        indexcols1=indexcols[indexcols['indexName'].isin(indices)].to_dict('r')
+        #print("Indices:")
+        return indexcols1
+
 
 def rssfeeds():
 
-    feedsources=['https://www.indiainfoline.com/rss/news.xml','http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.financialexpress.com/market/indian-markets/feed/','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
+    feedsources=['https://www.indiainfoline.com/rss/news.xml','http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.financialexpress.com/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
     counter=0
     for feedsource in feedsources:
@@ -119,10 +128,11 @@ def rssfeeds():
 
 def twitter():
     tweetnews=[]
-    
+    auth = tweepy.OAuthHandler("59X78YGbAo6BQ5QefdmQmtYmj", "JCebH7bgEtOFSUAi5Y6dIum45YsGjBd8oSwU7glcUaPoKaTcx4")
+    auth.set_access_token("572792793-RK5PLEtoDdkLog2D5um7xlHXhKmwMJG3UsLFk7jH","Umibys5vQwD4DV5joRrQrvyZezXvt34LDXnjywuW1bMAV" )
 
     api = tweepy.API(auth)
-    handles=set(['CNBCTV18Live','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ETmarkets','BloombergTV','CNBCTV18Live','@BT_India','ZeeBusiness','FinancialXpress','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets'])
+    handles=set(['CNBCTV18Live','ReutersIndia','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','BloombergTV','CNBCTV18Live','@BT_India','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets'])
 
     tweets=[]
     for handle in handles:
