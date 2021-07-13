@@ -22,6 +22,7 @@ from pyowm.owm import OWM
 import tweepy
 import pytz
 from nsepython import *
+import yfinance as yf
 
 
 def home(request):
@@ -79,12 +80,46 @@ def home(request):
     return render(request, 'home.html', {'newslist':newslist,'markets':markets()})
     
 
+def globalstocks(ticker):
+
+    # replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
+    #url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+ticker+'&interval=5min&apikey=LGMS48PFLKLHONKB'
+    #r = requests.get(url).json().get('Global Quote')
+    #print(type(r))
+    #print(r)
+    #print(r.keys())
+
+    stock = yf.Ticker(ticker)
+    data1= stock.info
+    price=data1.get('regularMarketPrice')
+    prevPrice=data1.get('previousClose')
+    #print("price:",price)
+    #print("prev:",prevPrice)
+    try:
+        percChange=round((price/data1.get('previousClose')-1)*100,1)
+    except:
+        percChange=0
+    response={'indexName':ticker,'last':price,'percChange':percChange}
+    return response
+
+
+
 def markets():
         indices=['NIFTY 50','NIFTY BANK','NIFTY REALTY','NIFTY PHARMA','NIFTY PHARMA']
         indexcols=nse_index()[['indexName','last','percChange']]
         indexcols1=indexcols[indexcols['indexName'].isin(indices)].to_dict('r')
-        #print("Indices:")
+        #print(indexcols1)
+        tickers=set(['GLD','QQQ','^N225','^GDAXI','^FTSE','^FCHI'])
+
+        for ticker in tickers:
+            indexcol1=indexcols1.append(globalstocks(ticker))
+        
+        #print(indexcol1)
+
         return indexcols1
+
+
+    
 
 
 def rssfeeds():
@@ -126,11 +161,13 @@ def rssfeeds():
     
 
 
+
+
+
 def twitter():
     tweetnews=[]
-    auth = tweepy.OAuthHandler("59X78YGbAo6BQ5QefdmQmtYmj", "JCebH7bgEtOFSUAi5Y6dIum45YsGjBd8oSwU7glcUaPoKaTcx4")
-    auth.set_access_token("572792793-RK5PLEtoDdkLog2D5um7xlHXhKmwMJG3UsLFk7jH","Umibys5vQwD4DV5joRrQrvyZezXvt34LDXnjywuW1bMAV" )
-
+    
+    
     api = tweepy.API(auth)
     handles=set(['CNBCTV18Live','ReutersIndia','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','ETmarkets','ReutersIndia','EconomicTimes','NDTVProfit','forbes_india','moneycontrolcom','ETNOWlive','BloombergTV','CNBCTV18Live','@BT_India','NSEIndia','TOIBusiness','IIFL_Live','FinancialTimes','BloombergQuint','WSJMarkets'])
 
