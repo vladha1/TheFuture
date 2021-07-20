@@ -2,7 +2,7 @@ import yfinance as yf
 
 
 response={}
-ticker="^FCHI"
+ticker="^SINF8"
 stock = yf.Ticker(ticker)
 
 data1= stock.info

@@ -56,7 +56,7 @@ def home(request):
                 counter=counter+1
                 newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
 
-    newslist=newslist+rssfeeds()+twitter()
+    newslist=newslist+rssfeeds()#+twitter()
     newsdf=pd.DataFrame(newslist)
     #if searchcriteria!=None:
     #    newsdf=newsdf[(newsdf['Summary_Detail'].str.contains(searchcriteria))|(newsdf['Title'].str.contains(searchcriteria))|(newsdf['Source'].str.contains(searchcriteria))]
@@ -75,9 +75,9 @@ def home(request):
     #wordcloud = wordcloudplot(txt)
 
     #print("responding")
-
+    rendering={'indiamarkets':indiamarkets(),'newslist':newslist,'SPX':globalstocks('^SPX'),'SPXF':globalstocks('ES=F'),'NQF':globalstocks('NQ=F'),'DOWF':globalstocks('YM=F'),'CRDF':globalstocks('CL=F'),'GLD':globalstocks('GLD'),'GLDF':globalstocks('GC=F'),'BTC':globalstocks('BTC-USD'),'INR':globalstocks('USDINR=X'),'N225':globalstocks('^N225'),'SGXN':globalstocks('IN-N21.SI'),'RUT':globalstocks('^RUT'),'DJI':globalstocks('^DJI'),'VIX':globalstocks('^VIX'),'NDAQ':globalstocks('^IXIC'),'KOSPI':globalstocks('^KS11'),'FTSE':globalstocks('^FTSE'),'DAX':globalstocks('^GDAXI'),'CAC':globalstocks('^FCHI'),'TNX':globalstocks('^TNX'),'SHCOMP':globalstocks('000001.SS'),'HSI':globalstocks('^HSI')}
     
-    return render(request, 'home.html', {'newslist':newslist,'markets':markets()})
+    return render(request, 'newhome.html',rendering)
     
 
 def globalstocks(ticker):
@@ -96,26 +96,29 @@ def globalstocks(ticker):
     #print("price:",price)
     #print("prev:",prevPrice)
     try:
-        percChange=round((price/data1.get('previousClose')-1)*100,1)
+        percChange=str(round((price/data1.get('previousClose')-1)*100,1))
     except:
         percChange=0
-    response={'indexName':ticker,'last':price,'percChange':percChange}
+    response=str(round(price,1))+" ("+percChange+"%)"
     return response
 
-
-
-def markets():
-        indices=['NIFTY 50','NIFTY BANK','NIFTY REALTY','NIFTY PHARMA','NIFTY PHARMA']
-        indexcols=nse_index()[['indexName','last','percChange']]
-        indexcols1=indexcols[indexcols['indexName'].isin(indices)].to_dict('r')
+def globalmarkets():
+        
+        indexcols1=[]
         #print(indexcols1)
-        tickers=set(['GLD','QQQ','^N225','^GDAXI','^FTSE','^FCHI'])
+        tickers=set(['GLD','QQQ','^N225','000001.SS','^HSI','^TNX','^GDAXI','^FTSE','^FCHI','^SPX','USDINR=X'])
 
         for ticker in tickers:
             indexcol1=indexcols1.append(globalstocks(ticker))
-        
-        #print(indexcol1)
+        return indexcols1
 
+def indiamarkets():
+        indices=['NIFTY 50','NIFTY BANK','NIFTY REALTY','NIFTY PHARMA','NIFTY PHARMA','NIFTY MIDCAP 100','NIFTY INFRA', 'NIFTY CONSUMPTION', 'NIFTY GS 10YR', 'NIFTY COMMODITIES','NIFTY AUTO','NIFTY PSE', 'NIFTY PSU BANK']
+        indexcols=nse_index()[['indexName','last','percChange']]
+        #indexcols1=indexcols[indexcols['indexName']].to_dict('r')
+        indexcols1=indexcols[indexcols['indexName'].isin(indices)].to_dict('r')
+        #print(indexcols1)
+       
         return indexcols1
 
 
@@ -159,8 +162,6 @@ def rssfeeds():
             news=news+[newsitem]
     return news
     
-
-
 
 
 

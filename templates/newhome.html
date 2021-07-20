@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+
+    <script src=
+    "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+        </script>
+        <script src=
+    "https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js">
+        </script>
+        <link rel="stylesheet" href=
+    "https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+        <link rel="stylesheet" 
+            type="text/css" href=
+    "https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+      
+        <script type="text/javascript">
+            function showHideRow(row) {
+                $("#" + row).toggle();
+            }
+        </script>
+
+
+<script>
+    function startTime() {
+      var today = new Date();
+
+      var d=today.getDate();
+      var mm =today.getMonth()+1;
+      var y =today.getFullYear();
+
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById('tm').innerHTML =  h + ":" + m;
+      document.getElementById('dt').innerHTML =  y+"-"+mm+"-"+d;
+      var t = setTimeout(startTime, 1000);
+    }
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    }
+</script>
+
+
+<head>
+    <meta http-equiv="refresh" content="60">
+<meta name="viewport" content="width=device-width, initial-scale=1", meta http-equiv="refresh" content="60">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  
+}
+
+.frozen{
+    top:0;
+    
+}
+
+.left{
+    top:0;
+    width: 20%;
+  }
+
+ .right {
+  width: 20%;
+  
+}
+
+.middle {
+  width: 60%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+    body {
+        margin: 0 auto;
+        padding: 0px;
+        text-align: left;
+        width: 100%;
+        font-family: "Myriad Pro", 
+            "Helvetica Neue", Helvetica, 
+            Arial, Sans-Serif;
+    }
+
+    #wrapper {
+        margin: 0 auto;
+        padding: 0px;
+        text-align: center;
+        width: 100%;
+    }
+
+    #wrapper h1 {
+        margin-top: 50px;
+        font-size: 45px;
+        color:white;
+    }
+
+    #wrapper h1 p {
+        font-size: 20px;
+    }
+    wrapper h1 p {
+        font-size: 20px;
+    }
+    #table_detail {
+        font-size: 20px;
+        text-align: left;
+        border:0px;
+        border-collapse: collapse;
+        border-spacing: 0px;
+
+        
+    }
+
+   
+    #table_detail tr:hover {
+        background-color:black;
+    }
+
+    #table_detail .hidden_row {
+        display: none;
+    }
+</style>
+
+</style>
+</head>
+<body onload="startTime()">
+
+
+<div class="row">
+    <table class="table  table-dark"  id="table_detail" align:left  border-collapse: collapse padding: 0px cellpadding=0px cellspacing=0px>
+  
+    <tr>
+        <td> <SPAN id="tm" style='color:#c19edf; font-size: 80px'></SPAN> <SPAN id="dt" style='color:rgb(248, 250, 252); font-size: 40px'></SPAN></td><td><table id="table_detail1"; align:left; border:0px;  border-collapse: collapse; border-spacing: 0px; cellpadding=0px; style='color:#c9e743;'>
+  
+            <tr font-size:10px>
+                <td>SPX {{ SPX }} </td><td> SPX Futures {{SPXF}}</td><td> Nikkei {{ N225 }}</td><td>GLD ETF {{GLD}}</td><td>FTSE {{ FTSE }} </td>
+            </tr>
+            <tr font-size:10px>
+                <td>NASDAQ {{ NDAQ }}</td><td>NASDAQ Futures {{NQF}} </td><td>SHCOMP {{SHCOMP}}</td><td>USDINR {{INR}}</td><td>DAX {{DAX}} </td>
+            </tr>
+            <tr font-size:10px>
+                <td>DOW {{ DJI }}</td><td>DOW Futures {{DOWF}} </td><td>HSI {{HSI}}</td><td>BTC-USD {{BTC}} </td><td>CAC {{CAC}}  </td>
+            </tr>
+            <tr font-size:10px>
+                <td>Russell 2K {{ RUT }}</td><td>Gold Futures {{GLDF}}</td><td> KOSPI {{KOSPI}} </td><td>10yr Bond Yield  {{TNX}}</td><td>-</td>
+            </tr>
+            <tr font-size:10px>
+                <td>VIX {{ VIX }}</td><td>Crude Futures {{CRDF}} </td><td> SGX Nifty {{SGXN}} </td><td>-</td><td>-</td>
+            </tr>
+        </table></td>
+        
+    </tr>
+    </table>
+</div>
+
+<div class="row">
+  <div class="column left" style="background-color:rgb(7, 0, 0);" >
+     
+  
+  <h2 style='color:#c19edf'>India Markets</h2>
+    <TABLE>
+        <tr><td> {% for item in indiamarkets %}<SPAN style='color:#c9e743; font-size:20px'>{{ item.indexName }} {{ item.last }} ({{ item.percChange }}%)</SPAN><BR>{% endfor %}</td></tr>
+    </TABLE>
+
+  </div>
+  
+  <div class="column middle">
+    
+    <div id="wrapper">
+  
+        <table class="table table-striped table-dark"  id="table_detail" align:left >
+  
+                       
+            {% for newsitem in newslist %}
+                        
+            <tr>    
+                <TD  onclick="showHideRow('{{newsitem.id}}');"><SPAN style='color:rgb(248, 250, 252);'> {{newsitem.Published}}| <SPAN style='color:#b2ffff'>{{newsitem.Title}}|</SPAN>
+                    <SPAN style='color:rgb(0, 128, 21));'><a href='{{newsitem.link}}' target="_blank">{{newsitem.Source}}</a></SPAN><SPAN></a></SPAN>
+                    </TD>
+            </tr>
+            
+            <tr id="{{newsitem.id}}" class="hidden_row">
+                <td colspan=4>
+                    {{newsitem.Summary_Detail}}
+                </td>
+            </tr>
+
+            {% endfor %}
+            
+        </table>
+    </div>
+   
+
+  </div>
+  
+  <div class="column right" style="background-color:#ccc;" >
+    <h2>Metrics</h2>
+
+    <TABLE>
+        <tr><td> {% for item in globalmarkets %}<SPAN style='color:#5343e7'>{{ item.indexName }} {{ item.last }} ({{ item.percChange }}%)</SPAN><BR>{% endfor %}</td></tr>
+    </TABLE>
+
+  </div>
+</div>
+
+</body>
+</html>
