@@ -112,11 +112,24 @@ def globalmarkets():
             indexcol1=indexcols1.append(globalstocks(ticker))
         return indexcols1
 
+def niftyrename(row):
+    if row['indexName']=='NIFTY 50':
+        return "NIFTY"
+    else:
+        return row['indexName'].replace('NIFTY ',"")
+
 def indiamarkets():
-        indices=['NIFTY 50','NIFTY BANK','NIFTY REALTY','NIFTY PHARMA','NIFTY PHARMA','NIFTY MIDCAP 100','NIFTY INFRA', 'NIFTY CONSUMPTION', 'NIFTY GS 10YR', 'NIFTY COMMODITIES','NIFTY AUTO','NIFTY PSE', 'NIFTY PSU BANK']
+
+    #['NIFTY 50', 'NIFTY MIDCAP 50', 'NIFTY MIDCAP 100', 'NIFTY BANK', 'NIFTY FMCG', 'NIFTY FIN SERVICE', 'NIFTY COMMODITIES', 'NIFTY CONSUMPTION', 'NIFTY IT', 'NIFTY AUTO', 'NIFTY PHARMA', 'NIFTY INFRA', 'NIFTY ENERGY', 'NIFTY METAL', 'NIFTY REALTY', 'NIFTY MEDIA', 'NIFTY GS 10YR']
+        indices=['NIFTY 50', 'NIFTY MIDCAP 50', 'NIFTY MIDCAP 100', 'NIFTY BANK', 'NIFTY FMCG', 'NIFTY FIN SERVICE', 'NIFTY COMMODITIES', 'NIFTY CONSUMPTION', 'NIFTY IT', 'NIFTY AUTO', 'NIFTY PHARMA', 'NIFTY INFRA', 'NIFTY ENERGY', 'NIFTY METAL', 'NIFTY REALTY', 'NIFTY MEDIA', 'NIFTY GS 10YR']
+        
+        
         indexcols=nse_index()[['indexName','last','percChange']]
+
         #indexcols1=indexcols[indexcols['indexName']].to_dict('r')
-        indexcols1=indexcols[indexcols['indexName'].isin(indices)].to_dict('r')
+        indexcols1=indexcols[indexcols['indexName'].isin(indices)]
+        indexcols1['indexName']=indexcols1.apply(niftyrename,axis=1)
+        indexcols1=indexcols1.to_dict('r')
         #print(indexcols1)
        
         return indexcols1
