@@ -172,13 +172,13 @@
   <div class="column left" style="background-color:rgb(7, 0, 0);" >
 
 <h2 style='color:#c19edf'>BSE</h2>
-    <TABLE>
+    <TABLE class="table  table-dark"  id="table_detail" align:left  border-collapse: collapse padding: 1px cellpadding=0px cellspacing=0px>
         <tr><td><SPAN style='color:#c9e743; font-size:20px'>BSE Sensex {{BSESN}}</SPAN></td></tr>
         
     </TABLE>
   
   <h2 style='color:#c19edf'>Nifty</h2>
-    <TABLE>
+    <TABLE class="table  table-dark"  id="table_detail" align:left  border-collapse: collapse padding: 1px cellpadding=0px cellspacing=0px>
         <tr><td> {% for item in indiamarkets %}<SPAN style='color:#c9e743; font-size:20px'>{{ item.indexName }} {{ item.last }} ({{ item.percChange }}%)</SPAN><BR>{% endfor %}</td></tr>
         <tr><td  vertical-align: bottom> <SPAN id="tm" style='color:#c19edf; font-size: 80px'></SPAN> <SPAN id="dt" style='color:rgb(248, 250, 252); font-size: 40px'></SPAN></td></tr>
     </TABLE>
