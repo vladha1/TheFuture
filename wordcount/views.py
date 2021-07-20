@@ -75,10 +75,16 @@ def home(request):
     #wordcloud = wordcloudplot(txt)
 
     #print("responding")
-    rendering={'indiamarkets':indiamarkets(),'newslist':newslist,'SPX':globalstocks('^SPX'),'SPXF':globalstocks('ES=F'),'NQF':globalstocks('NQ=F'),'DOWF':globalstocks('YM=F'),'CRDF':globalstocks('CL=F'),'GLD':globalstocks('GLD'),'GLDF':globalstocks('GC=F'),'BTC':globalstocks('BTC-USD'),'INR':globalstocks('USDINR=X'),'N225':globalstocks('^N225'),'SGXN':globalstocks('IN-N21.SI'),'RUT':globalstocks('^RUT'),'DJI':globalstocks('^DJI'),'VIX':globalstocks('^VIX'),'NDAQ':globalstocks('^IXIC'),'KOSPI':globalstocks('^KS11'),'FTSE':globalstocks('^FTSE'),'DAX':globalstocks('^GDAXI'),'CAC':globalstocks('^FCHI'),'TNX':globalstocks('^TNX'),'BSESN':globalstocks('^BSESN'),'SHCOMP':globalstocks('000001.SS'),'HSI':globalstocks('^HSI')}
+    rendering={'nsetoplosers':nsetoplosers(),'nsetopgainers':nsetopgainers(),'indiamarkets':indiamarkets(),'newslist':newslist,'SPX':globalstocks('^SPX'),'SPXF':globalstocks('ES=F'),'NQF':globalstocks('NQ=F'),'DOWF':globalstocks('YM=F'),'CRDF':globalstocks('CL=F'),'GLD':globalstocks('GLD'),'GLDF':globalstocks('GC=F'),'BTC':globalstocks('BTC-USD'),'INR':globalstocks('USDINR=X'),'N225':globalstocks('^N225'),'SGXN':globalstocks('IN-N21.SI'),'RUT':globalstocks('^RUT'),'DJI':globalstocks('^DJI'),'VIX':globalstocks('^VIX'),'NDAQ':globalstocks('^IXIC'),'KOSPI':globalstocks('^KS11'),'FTSE':globalstocks('^FTSE'),'DAX':globalstocks('^GDAXI'),'CAC':globalstocks('^FCHI'),'TNX':globalstocks('^TNX'),'BSESN':globalstocks('^BSESN'),'SHCOMP':globalstocks('000001.SS'),'HSI':globalstocks('^HSI')}
     
     return render(request, 'newhome.html',rendering)
     
+
+def nsetopgainers():
+    return nse_get_top_gainers()[['symbol','lastPrice','pChange']].to_dict('records')
+    
+def nsetoplosers():
+    return nse_get_top_losers()[['symbol','lastPrice','pChange']].to_dict('records')
 
 def globalstocks(ticker):
 
@@ -140,7 +146,8 @@ def indiamarkets():
 
 def rssfeeds():
 
-    feedsources=['http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/10000664/device/rss/rss.html','https://www.indiainfoline.com/rss/resultexpress.xml','https://www.financialexpress.com/market/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms','https://economictimes.indiatimes.com/prime/rssfeeds/69891145.cms','https://www.thehindu.com/business/feeder/default.rss']
+    feedsources=['https://www.ft.com/myft/following/55887617-55de-4c1f-a127-1c3e769530aa.rss']
+    #feedsources=['http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/10000664/device/rss/rss.html','https://www.indiainfoline.com/rss/resultexpress.xml','https://www.financialexpress.com/market/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms','https://economictimes.indiatimes.com/prime/rssfeeds/69891145.cms','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
     counter=0
     for feedsource in feedsources:

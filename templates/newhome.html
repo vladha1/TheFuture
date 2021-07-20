@@ -216,11 +216,20 @@
 
   </div>
   
-  <div class="column right" style="background-color:#ccc;" >
-    <h2>Metrics</h2>
+  <div class="column right" style="background-color:rgb(27, 1, 1);" >
+    
+    <h2 style='color:#c19edf'>NSE Top Gainers</h2>
+    <TABLE class="table table-striped table-dark" >
+        {% for item in nsetopgainers %}
+        <tr><td><SPAN style='color:#c9e743; font-size:20px'> {{ item.symbol }} {{ item.lastPrice }} ({{ item.pChange }}%) </SPAN></td></tr>
+        {% endfor %}
+    </TABLE>
 
-    <TABLE>
-        <tr><td> {% for item in globalmarkets %}<SPAN style='color:#5343e7'>{{ item.indexName }} {{ item.last }} ({{ item.percChange }}%)</SPAN><BR>{% endfor %}</td></tr>
+    <h2 style='color:#c19edf'>NSE Top Losers</h2>
+    <TABLE class="table table-striped table-dark" >
+        {% for item in nsetoplosers %}
+        <tr><td><SPAN style='color:#c9e743; font-size:20px'> {{ item.symbol }} {{ item.lastPrice }} ({{ item.pChange }}%) </SPAN></td></tr>
+        {% endfor %}
     </TABLE>
 
   </div>
