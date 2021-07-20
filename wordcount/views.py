@@ -98,7 +98,7 @@ def globalstocks(ticker):
     try:
         percChange=str(round((price/data1.get('previousClose')-1)*100,1))
     except:
-        percChange=0
+        percChange="0"
     response=str(round(price,1))+" ("+percChange+"%)"
     return response
 
@@ -140,7 +140,7 @@ def indiamarkets():
 
 def rssfeeds():
 
-    feedsources=['https://www.indiainfoline.com/rss/news.xml','http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/19746125/device/rss/rss.xml','https://www.financialexpress.com/market/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/rssfeedsdefault.cms','https://www.moneycontrol.com/rss/MCtopnews.xml','https://www.thehindu.com/business/feeder/default.rss']
+    feedsources=['http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/10000664/device/rss/rss.html','https://www.indiainfoline.com/rss/resultexpress.xml','https://www.financialexpress.com/market/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms','https://economictimes.indiatimes.com/prime/rssfeeds/69891145.cms','https://www.moneycontrol.com/rss/economy.xml','https://www.moneycontrol.com/rss/business.xml','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
     counter=0
     for feedsource in feedsources:
