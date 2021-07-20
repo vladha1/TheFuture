@@ -174,7 +174,7 @@ def rssfeeds():
             newsitem['Published']=dateresult
             news=news+[newsitem]
 
-        news=list(set(news))
+        print(type(news))
     return news
     
 
