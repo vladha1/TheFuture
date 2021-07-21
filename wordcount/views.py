@@ -133,7 +133,7 @@ def indiamarkets():
         #indexcols1=indexcols[indexcols['indexName']].to_dict('r')
         indexcols1=indexcols[indexcols['indexName'].isin(indices)]
         indexcols1['indexName']=indexcols1.apply(niftyrename,axis=1)
-        indexcols1=indexcols1.to_dict('r')
+        indexcols1=indexcols1.to_dict('records')
         #print(indexcols1)
        
         return indexcols1
