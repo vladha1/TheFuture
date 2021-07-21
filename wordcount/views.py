@@ -28,6 +28,26 @@ import yfinance as yf
 def home(request):
     newslist=[]
     searchcriteria=None
+   
+    newsdf=pd.DataFrame(newslist+rssfeeds())
+
+    newsdf=newsdf.sort_values(by=['Published'],ascending=False)
+    newslist=newsdf.to_dict('records')
+
+    
+        
+    txt=str(newsdf['Title'])
+    
+    #wordcloud = wordcloudplot(txt)
+
+    #print("responding")
+    rendering={'nsetoplosers':nsetoplosers(),'nsetopgainers':nsetopgainers(),'indiamarkets':indiamarkets(),'newslist':newslist,'SPX':globalstocks('^SPX'),'SPXF':globalstocks('ES=F'),'NQF':globalstocks('NQ=F'),'DOWF':globalstocks('YM=F'),'CRDF':globalstocks('CL=F'),'GLD':globalstocks('GLD'),'GLDF':globalstocks('GC=F'),'BTC':globalstocks('BTC-USD'),'INR':globalstocks('USDINR=X'),'N225':globalstocks('^N225'),'SGXN':globalstocks('IN-N21.SI'),'RUT':globalstocks('^RUT'),'DJI':globalstocks('^DJI'),'VIX':globalstocks('^VIX'),'NDAQ':globalstocks('^IXIC'),'KOSPI':globalstocks('^KS11'),'FTSE':globalstocks('^FTSE'),'DAX':globalstocks('^GDAXI'),'CAC':globalstocks('^FCHI'),'TNX':globalstocks('^TNX'),'BSESN':globalstocks('^BSESN'),'SHCOMP':globalstocks('000001.SS'),'HSI':globalstocks('^HSI')}
+    
+    return render(request, 'newhome.html',rendering)
+    
+def newscatchernews():
+    newslist=[]
+    searchcriteria=None
     IndianURLs = urls(country = 'IN')
     
     searchcriteria = request.GET.get('search')
@@ -55,30 +75,8 @@ def home(request):
                 
                 counter=counter+1
                 newslist=newslist+[{'Source':IndianURL,'Title':article.title,'Published':dateresult,'Summary_Detail':detailtext,'link':article.link,'id':"head_"+str(counter)}]
+    return newslist
 
-    newslist=newslist+rssfeeds()#+twitter()
-    newsdf=pd.DataFrame(newslist)
-    #if searchcriteria!=None:
-    #    newsdf=newsdf[(newsdf['Summary_Detail'].str.contains(searchcriteria))|(newsdf['Title'].str.contains(searchcriteria))|(newsdf['Source'].str.contains(searchcriteria))]
-
-    #print("type",type(newsdf))
-    newsdf=newsdf.sort_values(by=['Published'],ascending=False)
-    newslist=newsdf.to_dict('records')
-
-    #newslist_sorted=sorted(newslist, key= lambda i: i['Published'],reverse=True)
-
-                #newslist_sorted=newslist_sorted[newslist_sorted['Summary_Detail'].str.contains("Hwang")]
-    
-        
-    txt=str(newsdf['Title'])
-    
-    #wordcloud = wordcloudplot(txt)
-
-    #print("responding")
-    rendering={'nsetoplosers':nsetoplosers(),'nsetopgainers':nsetopgainers(),'indiamarkets':indiamarkets(),'newslist':newslist,'SPX':globalstocks('^SPX'),'SPXF':globalstocks('ES=F'),'NQF':globalstocks('NQ=F'),'DOWF':globalstocks('YM=F'),'CRDF':globalstocks('CL=F'),'GLD':globalstocks('GLD'),'GLDF':globalstocks('GC=F'),'BTC':globalstocks('BTC-USD'),'INR':globalstocks('USDINR=X'),'N225':globalstocks('^N225'),'SGXN':globalstocks('IN-N21.SI'),'RUT':globalstocks('^RUT'),'DJI':globalstocks('^DJI'),'VIX':globalstocks('^VIX'),'NDAQ':globalstocks('^IXIC'),'KOSPI':globalstocks('^KS11'),'FTSE':globalstocks('^FTSE'),'DAX':globalstocks('^GDAXI'),'CAC':globalstocks('^FCHI'),'TNX':globalstocks('^TNX'),'BSESN':globalstocks('^BSESN'),'SHCOMP':globalstocks('000001.SS'),'HSI':globalstocks('^HSI')}
-    
-    return render(request, 'newhome.html',rendering)
-    
 
 def nsetopgainers():
     return nse_get_top_gainers()[['symbol','lastPrice','pChange']].to_dict('records')
@@ -146,8 +144,8 @@ def indiamarkets():
 
 def rssfeeds():
 
-    feedsources=['https://www.ft.com/myft/following/55887617-55de-4c1f-a127-1c3e769530aa.rss']
-    #feedsources=['http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/10000664/device/rss/rss.html','https://www.indiainfoline.com/rss/resultexpress.xml','https://www.financialexpress.com/market/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms','https://economictimes.indiatimes.com/prime/rssfeeds/69891145.cms','https://www.thehindu.com/business/feeder/default.rss']
+    #feedsources=['https://www.ft.com/myft/following/55887617-55de-4c1f-a127-1c3e769530aa.rss']
+    feedsources=['http://feeds.feedburner.com/nseindia/results','https://www.reutersagency.com/feed/?best-regions=asia&post_type=best','https://www.investing.com/rss/news.rss','https://www.cnbc.com/id/10000664/device/rss/rss.html','https://www.indiainfoline.com/rss/resultexpress.xml','https://www.financialexpress.com/market/feed/','https://www.news18.com/rss/business.xml','https://www.business-standard.com/rss/markets-106.rss','https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms','https://economictimes.indiatimes.com/prime/rssfeeds/69891145.cms','https://www.thehindu.com/business/feeder/default.rss']
     news=[]
     counter=0
     for feedsource in feedsources:
@@ -181,7 +179,7 @@ def rssfeeds():
             newsitem['Published']=dateresult
             news=news+[newsitem]
 
-        print(type(news))
+        #print(type(news))
     return news
     
 
