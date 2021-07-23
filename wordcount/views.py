@@ -98,6 +98,7 @@ def globalstocks(ticker):
     stock = yf.Ticker(ticker)
     data1= stock.info
     price=data1.get('regularMarketPrice')
+    
     prevPrice=data1.get('previousClose')
     #print("price:",price)
     #print("prev:",prevPrice)
@@ -105,7 +106,13 @@ def globalstocks(ticker):
         percChange=str(round((price/data1.get('previousClose')-1)*100,1))
     except:
         percChange="0"
-    response=str(round(price,1))+" ("+percChange+"%)"
+    
+    try:
+        price=str(round(price,1))
+    except:
+        price=str(price)
+
+    response=price+" ("+percChange+"%)"
     return response
 
 def globalmarkets():
