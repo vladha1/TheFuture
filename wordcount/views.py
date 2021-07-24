@@ -97,8 +97,9 @@ def globalstocks(ticker):
 
     stock = yf.Ticker(ticker)
     data1= stock.info
-    price=data1.get('regularMarketPrice')
     
+    
+    price=data1.get('regularMarketPrice')
     prevPrice=data1.get('previousClose')
     #print("price:",price)
     #print("prev:",prevPrice)
@@ -215,6 +216,7 @@ def twitter():
                                 )
         except:
             print(handle," not valid")
+            a=0
 
     utctz=pytz.timezone('UTC')
     intz = pytz.timezone('Asia/Calcutta')
