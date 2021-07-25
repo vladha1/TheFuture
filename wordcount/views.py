@@ -97,7 +97,7 @@ def globalstocks(ticker):
         #print("price:",price)
         #print("prev:",prevPrice)
         percChange=str(round((price/data1.get('previousClose')-1)*100,1))
-        percChange="0"
+        #percChange="0"
         price=str(round(price,1))
         price=str(price)
         response=price+" ("+percChange+"%)"
