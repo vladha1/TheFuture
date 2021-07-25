@@ -88,32 +88,22 @@ def nsetoplosers():
 
 def globalstocks(ticker):
 
-    # replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
-    #url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+ticker+'&interval=5min&apikey=LGMS48PFLKLHONKB'
-    #r = requests.get(url).json().get('Global Quote')
-    #print(type(r))
-    #print(r)
-    #print(r.keys())
-
-    stock = yf.Ticker(ticker)
-    data1= stock.info
-    
-    
-    price=data1.get('regularMarketPrice')
-    prevPrice=data1.get('previousClose')
-    #print("price:",price)
-    #print("prev:",prevPrice)
     try:
+
+        stock = yf.Ticker(ticker)
+        data1= stock.info
+        price=data1.get('regularMarketPrice')
+        prevPrice=data1.get('previousClose')
+        #print("price:",price)
+        #print("prev:",prevPrice)
         percChange=str(round((price/data1.get('previousClose')-1)*100,1))
-    except:
         percChange="0"
-    
-    try:
         price=str(round(price,1))
-    except:
         price=str(price)
+        response=price+" ("+percChange+"%)"
+    except:
+        response="NA(NA%)"
 
-    response=price+" ("+percChange+"%)"
     return response
 
 def globalmarkets():
